@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bot Flash Sale</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg,#ff6a00,#ffb347);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+}
+
+.container {
+    width: 95%;
+    max-width: 420px;
+    padding: 30px;
+    border-radius: 25px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.time-row {
+    display: flex;
+    gap: 10px;
+}
+
+.time-row input {
+    flex: 1;
+    text-align: center;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 15px;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    background: white;
+    color: #ff6a00;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(255,255,255,0.6);
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+#output {
+    margin-top: 20px;
+    text-align: center;
+    min-height: 90px;
+}
+
+.progress-container {
+    width: 100%;
+    background: rgba(255,255,255,0.3);
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-bar {
+    height: 20px;
+    width: 0%;
+    background: white;
+    transition: width 0.1s linear;
+}
+
+.credit {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 12px;
+    opacity: 0.9;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🤖 BOT FLASH SALE</h2>
+
+    <select>
+        <option>Minggu</option>
+        <option>Senin</option>
+        <option>Selasa</option>
+        <option>Rabu</option>
+        <option>Kamis</option>
+        <option>Jumat</option>
+        <option>Sabtu</option>
+    </select>
+
+    <input type="date" id="tanggal">
+
+    <div class="time-row">
+        <input type="number" id="jam" placeholder="Jam" min="0" max="23">
+        <input type="number" id="menit" placeholder="Menit" min="0" max="59">
+        <input type="number" id="detik" placeholder="Detik" min="0" max="59">
+    </div>
+
+    <input type="text" id="link" placeholder="https://id.shp.ee/xxxxx">
+
+    <button onclick="aktifkanBot()">Aktifkan Bot</button>
+
+    <div id="output"></div>
+
+    <div class="credit">
+        Credit: BOT FLASH SALE
+    </div>
+</div>
+
+<script>
+function aktifkanBot() {
+
+    const tanggal = document.getElementById("tanggal").value;
+    const jam = parseInt(document.getElementById("jam").value);
+    const menit = parseInt(document.getElementById("menit").value);
+    const detik = parseInt(document.getElementById("detik").value);
+    const link = document.getElementById("link").value.trim();
+
+    if (!tanggal) return alert("Tanggal wajib diisi!");
+    if (new Date(tanggal).getFullYear() !== 2026) return alert("Tahun harus 2026!");
+    if (isNaN(jam) || jam < 0 || jam > 23) return alert("Jam 0-23!");
+    if (isNaN(menit) || menit < 0 || menit > 59) return alert("Menit 0-59!");
+    if (isNaN(detik) || detik < 0 || detik > 59) return alert("Detik 0-59!");
+
+    const regex = /^https:\/\/id\.shp\.ee\/.+$/;
+    if (!regex.test(link)) return alert("Format link salah!");
+
+    const output = document.getElementById("output");
+
+    output.innerHTML = `
+        <div class="progress-container">
+            <div class="progress-bar" id="bar"></div>
+        </div>
+        <div id="percent">0%</div>
+    `;
+
+    let progress = 0;
+    const duration = 15000;
+    const intervalTime = 100;
+    const increment = 100 / (duration / intervalTime);
+
+    const interval = setInterval(() => {
+        progress += increment;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            setTimeout(() => {
+                output.innerHTML = "🙂<br><br><b>Bot diaktifkan</b><br>Silahkan menunggu...";
+            }, 500);
+        }
+        document.getElementById("bar").style.width = progress + "%";
+        document.getElementById("percent").innerText = Math.floor(progress) + "%";
+    }, intervalTime);
+}
+</script>
+
+</body>
+</html>
